@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.17);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5.5px);
+            -webkit-backdrop-filter: blur(5.5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .logo span {
+            background: linear-gradient(to right, #5e5eff, #a55eea);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+        .nav-links a:hover {
+            color: #a55eea;
+        }
+        .sign-up {
+            background: linear-gradient(to right, #6a5acd, #a55eea);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .sign-up:hover {
+            background: linear-gradient(to right, #a55eea, #6a5acd);
+        }
+    </style>
+</head>
+<body>
+  <header>
+     <nav class="navbar">
+        <div class="logo">
+            <span>Bikram</span>Mondal5
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Marketplace</a></li>
+            <li><a href="#">Upload</a></li>
+            <li><a href="#">My Materials</a></li>
+            <li><a href="#">Thumbnails</a></li>
+        </ul>
+        <button class="sign-up">Sign up</button>
+    </nav>
+  </header>
+</body>
+</html>
