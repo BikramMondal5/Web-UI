@@ -43,7 +43,7 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background-color: #6c31ce;
+        background-color: #A855F7;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
@@ -67,7 +67,7 @@
       /* Chat container - full expanded chat */
       .container {
         width: 370px;
-        height: 600px;
+        height: 590px;
         background-color: #202020;
         color: #fff;
         box-sizing: border-box;
@@ -103,12 +103,13 @@
       }
       
       .profile-badge {
-        background-color: #6c31ce;
+        border: 1px solid #a855f7;
         border-radius: 25px;
         padding: 5px 15px;
         display: flex;
+        color: #a855f7;
         align-items: center;
-        font-weight: bold;
+        font-weight: normal;
       }
       
       .close-button {
@@ -177,7 +178,7 @@
       }
       
       .chat-box:focus {
-        border-color: #6c31ce;
+        border-color: #A855F7;
         box-shadow: 0 0 0 2px rgba(108, 49, 206, 0.1);
       }
       
@@ -283,7 +284,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #6c31ce;
+        background-color: #A855F7;
         color: #fff;
         width: 40px;
         height: 40px;
@@ -294,7 +295,7 @@
       }
       
       .run-btn:hover {
-        background-color: #5718b3;
+        background-color: #9333EA;
         transform: scale(1.05);
       }
       
@@ -324,8 +325,8 @@
       }
       
       .avatar {
-        width: 80px;
-        height: 80px;
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
         background-color: #fff;
         display: flex;
@@ -493,6 +494,9 @@
       .pulse {
         animation: pulse 2s infinite;
       }
+      .colored-text{
+        color: #A855F7;
+      }
     </style>
   </head>
   <body>
@@ -548,7 +552,7 @@
         };
         
         // Initialize Google Generative AI
-        const apiKey = "123456789"; // Replace with your actual API key
+        const apiKey = "AIzaSyCAk4mkNVUtb3Fqi1SoU_a4y6r7_sWhxxs"; // Replace with your actual API key
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         
@@ -572,15 +576,15 @@
         function addWelcomeScreen() {
           const welcomeHTML = `
             <div class="greeting-container">
-              <h2 class="welcome-header">Let's grow <span class="colored-text">together!</span> <span class="emoji">😊</span><span class="plant-emoji">🌱</span></h2>
+              <h2 class="welcome-header">Let's build <span class="colored-text">together!</span></h2>
               
               <div class="avatar-container">
                 <div class="avatar">
-                  <img src="https://cdn.pixabay.com/photo/2017/10/24/00/39/bot-icon-2883144_960_720.png" alt="AI Assistant" />
+                  <img src="https://img.freepik.com/free-vector/graident-ai-robot-vectorart_78370-4114.jpg" alt="AI Assistant" />
                 </div>
               </div>
               
-              <h3 class="welcome-title">What can I help with?</h3>
+              <h3 class="welcome-title">What can I help you with?</h3>
               
               <div class="suggestion-buttons">
                 <div class="suggestion-button" id="suggestion-1">
