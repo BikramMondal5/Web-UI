@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edubyte</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Add Markdown parser library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <style>
+      /* CSS Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+      
+      .container {
+        width: 437px;
+        height: 600px;
+        background-color: #202020;
+        color: #333;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+      
+      body {
+        color: #333;
+        font-size: 16px;
+        min-height: 100vh;
+        font-family: consolas;
+        overflow: hidden;
+        background: transparent;
+      }
+      
+      header {
+        background-color: #1b1b1d;
+        color: #fff;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+        font-weight: 600;
+      }
+      
+      .user-profile {
+        width: 40px;
+        height: 40px;
+        background-color: #374151;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .user-profile:hover {
+        background-color: #4b5563;
+      }
+      
+      .user-profile i {
+        color: #fff;
+        font-size: 1.2rem;
+      }
+      
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(100% - 70px);
+        position: relative;
+        color: #fff;
+      }
+      
+      .chat-container {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .main-content {
+        flex: 1;
+        background: transparent;
+        border-radius: 10px;
+        overflow-y: auto;
+        padding: 20px;
+        scrollbar-width: thin;
+        scrollbar-color: #4b5563 #374151;
+        height: calc(100% - 70px);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .chat-box {
+        height: 50px;
+        width: 100%;
+        background-color: #98fb98;
+        border: 1px solid #d1d5db;
+        border-radius: 25px;
+        padding: 10px 50px 10px 20px;
+        font-size: 1rem;
+        color: #000;
+        outline: none;
+        transition: border-color 0.2s ease;
+        resize: none;
+      }
+      
+      .chat-box:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      }
+      
+      .chat-box::placeholder {
+        color: #000;
+      }
+      
+      .user-message {
+        background: #3b82f6;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin: 10px 0;
+        align-self: flex-end;
+        max-width: 70%;
+        overflow-wrap: break-word;
+      }
+      
+      .ai-message {
+        background-color: #374151;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin: 10px 0;
+        align-self: flex-start;
+        max-width: 70%;
+        overflow-wrap: break-word;
+      }
+      
+      /* Markdown styling in AI messages */
+      .ai-message code {
+        background-color: #2d3748;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+      }
+      
+      .ai-message pre {
+        background-color: #2d3748;
+        padding: 1em;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 0.5em 0;
+      }
+      
+      .ai-message pre code {
+        background-color: transparent;
+        padding: 0;
+        font-family: 'Courier New', monospace;
+      }
+      
+      .ai-message h1, .ai-message h2, .ai-message h3, 
+      .ai-message h4, .ai-message h5, .ai-message h6 {
+        margin-top: 0.8em;
+        margin-bottom: 0.5em;
+        font-weight: 600;
+      }
+      
+      .ai-message p {
+        margin-bottom: 0.75em;
+      }
+      
+      .ai-message p:last-child {
+        margin-bottom: 0;
+      }
+      
+      .ai-message ul, .ai-message ol {
+        padding-left: 1.5em;
+        margin-bottom: 0.75em;
+      }
+      
+      .ai-message blockquote {
+        border-left: 3px solid #6b7280;
+        padding-left: 1em;
+        margin-left: 0;
+        margin-right: 0;
+        font-style: italic;
+        color: #d1d5db;
+      }
+      
+      .loading-message {
+        font-style: italic;
+        color: #d1d5db;
+        margin: 10px 0;
+        align-self: flex-start;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .run-btn {
+        position: absolute;
+        right: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #3b82f6;
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .run-btn:hover {
+        background-color: #2563eb;
+        transform: scale(1.05);
+      }
+      
+      .run-btn:active {
+        transform: scale(0.95);
+      }
+      
+      .run-btn i {
+        font-size: 1.2rem;
+      }
+      
+      @media (max-width: 768px) {
+        .container {
+          width: 100%;
+          height: 100vh;
+        }
+      }
+      
+      @media (prefers-reduced-motion: reduce) {
+        .run-btn,
+        .user-profile {
+          transition: none;
+        }
+      }
+      
+      .edubyte {
+        font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(90deg, #ff7eb3, #ff758c, #ff5c74, #a05195);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-left: 0.5rem;
+      }
+      
+      header .heading {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      
+      /* New styles for enhanced interactivity */
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+      }
+      
+      .typing-indicator span {
+        height: 8px;
+        width: 8px;
+        background: #d1d5db;
+        border-radius: 50%;
+        display: block;
+        margin-right: 3px;
+        animation: typing 1s infinite ease-in-out;
+      }
+      
+      .typing-indicator span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      
+      .typing-indicator span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      
+      @keyframes typing {
+        0%, 100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        50% {
+          transform: translateY(-5px);
+          opacity: 1;
+        }
+      }
+      
+      .disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      
+      .ai-message a {
+        color: #3b82f6;
+        text-decoration: underline;
+      }
+      
+      /* Scrollbar styling */
+      .main-content::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .main-content::-webkit-scrollbar-track {
+        background: #374151;
+      }
+      
+      .main-content::-webkit-scrollbar-thumb {
+        background: #4b5563;
+        border-radius: 3px;
+      }
+      
+      /* Empty state styling */
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #9ca3af;
+        text-align: center;
+        padding: 20px;
+      }
+      
+      .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #4b5563;
+      }
+      
+      .empty-state h2 {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+      
+      .empty-state p {
+        max-width: 80%;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="heading">
+          <h1>Welcome to</h1>
+          <div class="edubyte">Edubyte!</div>
+        </div>
+        <a href="https://github.com/BikramMondal5"><div class="user-profile">
+          <img src="my_img.jfif" alt="User Profile" style="width: 100%; height: 100%; border-radius: 50%;" />
+        </div></a>
+      </header>
+      <main class="main-container">
+        <div id="main-content" class="main-content"></div>
+        <div id="chat-container" class="chat-container">
+          <input
+            id="chat-box"
+            type="text"
+            class="chat-box"
+            placeholder="Type a message..."
+          />
+          <div id="run-btn" class="run-btn disabled">
+            <i class="fa-solid fa-arrow-up"></i>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // DOM Elements
+        const chatBox = document.getElementById("chat-box");
+        const runBtn = document.getElementById("run-btn");
+        const chatHistory = document.getElementById("main-content");
+        
+        // Initialize the markdown parser
+        const markedOptions = {
+          gfm: true,
+          breaks: true,
+          sanitize: false,
+          smartypants: true
+        };
+        
+        // Initialize Google Generative AI
+        const apiKey = "123456789"; // Replace with your actual API key
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        
+        // Initial greeting message
+        setTimeout(() => {
+          addMessageToHistory("👋 Hi there! I'm Edubyte, your friendly AI assistant. How can I help you today?");
+        }, 500);
+        
+        // Generate response from Gemini
+        async function geminiResponse(userInput) {
+          try {
+            const result = await model.generateContent(userInput);
+            const response = await result.response;
+            return response.text();
+          } catch (error) {
+            console.error("Error generating content:", error);
+            return "Sorry, I encountered an error processing your request. Please try again.";
+          }
+        }
+        
+        // Process markdown in AI responses
+        function renderMarkdown(text) {
+          try {
+            // First convert URLs to actual links
+            const linkedText = linkify(text);
+            // Then render the markdown
+            return marked.parse(linkedText, markedOptions);
+          } catch (error) {
+            console.error("Error rendering markdown:", error);
+            return text;
+          }
+        }
+        
+        // Add messages to chat history
+        function addMessageToHistory(message, isUser = false) {
+          const messageDiv = document.createElement("div");
+          messageDiv.className = isUser ? "user-message" : "ai-message";
+          
+          if (isUser) {
+            // User messages don't need markdown rendering
+            messageDiv.textContent = message;
+          } else {
+            // AI messages get markdown rendering
+            messageDiv.innerHTML = renderMarkdown(message);
+            
+            // Make sure code blocks are properly styled
+            const codeBlocks = messageDiv.querySelectorAll('pre code');
+            if (codeBlocks.length > 0) {
+              // Add syntax highlighting class if available
+              codeBlocks.forEach(block => {
+                block.classList.add('language-javascript');
+              });
+            }
+          }
+          
+          // Add animation for better interaction
+          messageDiv.style.animation = "fadeIn 0.3s ease-in-out";
+          
+          chatHistory.appendChild(messageDiv);
+          scrollToBottom();
+        }
+        
+        // Convert URLs in text to clickable links
+        function linkify(text) {
+          const urlRegex = /(https?:\/\/[^\s]+)/g;
+          return text.replace(urlRegex, url => `<a href="${url}" target="_blank">${url}</a>`);
+        }
+        
+        // Smooth scroll to bottom of chat
+        function scrollToBottom() {
+          chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+        
+        // Display typing indicator
+        function showTypingIndicator() {
+          const loadingDiv = document.createElement("div");
+          loadingDiv.innerHTML = "<div class='typing-indicator'><span></span><span></span><span></span></div>";
+          loadingDiv.className = "loading-message";
+          loadingDiv.id = "typing-indicator";
+          chatHistory.appendChild(loadingDiv);
+          scrollToBottom();
+          return loadingDiv;
+        }
+        
+        // Process user message and get AI response
+        async function processUserMessage() {
+          const userMessage = chatBox.value.trim();
+          if (userMessage === "") return;
+          
+          // Add user message to chat
+          addMessageToHistory(userMessage, true);
+          chatBox.value = "";
+          
+          // Update button state
+          runBtn.classList.add("disabled");
+          
+          // Show typing indicator
+          const loadingDiv = showTypingIndicator();
+          
+          // Create enhanced prompt with context
+          const enhancedPrompt = `Your name is Edubyte, developed by Edubyte team, powered by Google API. You are a friendly and helpful AI designed to provide instant assistance. Your primary goal is to ensure users feel supported and receive accurate, clear answers to their queries. You may add some appropriate emojis to your response. Always maintain a polite, engaging, and approachable tone, making interactions enjoyable and productive. You can use markdown formatting in your responses for code blocks, lists, emphasis, etc. Please respond to this query: ${userMessage}`;
+          
+          try {
+            // Get AI response
+            const response = await geminiResponse(enhancedPrompt);
+            
+            // Remove typing indicator and add response
+            chatHistory.removeChild(loadingDiv);
+            addMessageToHistory(response);
+          } catch (error) {
+            chatHistory.removeChild(loadingDiv);
+            addMessageToHistory("Error: Unable to process the request. Please try again.");
+          }
+        }
+        
+        // Event Listeners
+        runBtn.addEventListener("click", () => {
+          if (!runBtn.classList.contains("disabled")) {
+            processUserMessage();
+          }
+        });
+        
+        chatBox.addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            if (!runBtn.classList.contains("disabled")) {
+              processUserMessage();
+            }
+          }
+        });
+        
+        // Focus chat input on load
+        chatBox.focus();
+        
+        // Update button state based on input
+        chatBox.addEventListener("input", () => {
+          if (chatBox.value.trim() === "") {
+            runBtn.classList.add("disabled");
+          } else {
+            runBtn.classList.remove("disabled");
+          }
+        });
+        
+        // Add window resize handler to ensure proper scrolling
+        window.addEventListener("resize", scrollToBottom);
+      });
+    </script>
+  </body>
+</html>
