@@ -22,21 +22,72 @@
         font-family: Arial, sans-serif;
       }
       
+      body {
+        font-size: 16px;
+        min-height: 100vh;
+        overflow: hidden;
+        background-color: #f5f5f5;
+        position: relative;
+      }
+      
+      /* Chat widget container - initially collapsed */
+      .chat-widget-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+      
+      /* Chat toggle button */
+      .chat-toggle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #6c31ce;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1002;
+      }
+      
+      .chat-toggle:hover {
+        transform: scale(1.05);
+        background-color: #5718b3;
+      }
+      
+      .chat-toggle i {
+        color: white;
+        font-size: 24px;
+      }
+      
+      /* Chat container - full expanded chat */
       .container {
-        width: 437px;
+        width: 370px;
         height: 600px;
         background-color: #202020;
         color: #fff;
         box-sizing: border-box;
         overflow: hidden;
         position: relative;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: scale(0);
+        opacity: 0;
+        transform-origin: bottom right;
+        position: absolute;
+        bottom: 75px;
+        right: 0;
       }
       
-      body {
-        font-size: 16px;
-        min-height: 100vh;
-        overflow: hidden;
-        background: transparent;
+      /* Active state for container */
+      .container.active {
+        transform: scale(1);
+        opacity: 1;
       }
       
       header {
@@ -348,15 +399,24 @@
         margin-top: 20px;
       }
       
-      @media (max-width: 768px) {
+      @media (max-width: 480px) {
         .container {
           width: 100%;
           height: 100vh;
+          border-radius: 0;
+          position: fixed;
+          bottom: 0;
+          right: 0;
+        }
+        
+        .chat-toggle {
+          bottom: 20px;
+          right: 20px;
         }
       }
       
       @media (prefers-reduced-motion: reduce) {
-        .run-btn {
+        .run-btn, .chat-toggle, .container {
           transition: none;
         }
       }
@@ -416,30 +476,55 @@
         font-size: 1.2em;
         margin-left: 5px;
       }
+      
+      /* Animation for toggle button */
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(108, 49, 206, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(108, 49, 206, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(108, 49, 206, 0);
+        }
+      }
+      
+      .pulse {
+        animation: pulse 2s infinite;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <div class="profile-badge">Maya</div>
-        <div class="close-button">×</div>
-      </header>
-      <main class="main-container">
-        <div id="main-content" class="main-content">
-          <!-- Initial welcome content will be added by JavaScript -->
-        </div>
-        <div id="chat-container" class="chat-container">
-          <input
-            id="chat-box"
-            type="text"
-            class="chat-box"
-            placeholder="Ask me anything..."
-          />
-          <button id="run-btn" class="run-btn disabled">
-            <i class="fa-solid fa-paper-plane"></i>
-          </button>
-        </div>
-      </main>
+    <div class="chat-widget-container">
+      <!-- Chat toggle button -->
+      <div class="chat-toggle pulse">
+        <i class="fa-solid fa-comment"></i>
+      </div>
+      
+      <!-- Chat container (initially hidden) -->
+      <div class="container">
+        <header>
+          <div class="profile-badge">Bhumi</div>
+          <div class="close-button">×</div>
+        </header>
+        <main class="main-container">
+          <div id="main-content" class="main-content">
+            <!-- Initial welcome content will be added by JavaScript -->
+          </div>
+          <div id="chat-container" class="chat-container">
+            <input
+              id="chat-box"
+              type="text"
+              class="chat-box"
+              placeholder="Ask me anything..."
+            />
+            <button id="run-btn" class="run-btn disabled">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </main>
+      </div>
     </div>
 
     <script type="module">
@@ -450,6 +535,9 @@
         const chatBox = document.getElementById("chat-box");
         const runBtn = document.getElementById("run-btn");
         const chatHistory = document.getElementById("main-content");
+        const chatToggle = document.querySelector(".chat-toggle");
+        const chatContainer = document.querySelector(".container");
+        const closeButton = document.querySelector(".close-button");
         
         // Initialize the markdown parser
         const markedOptions = {
@@ -460,9 +548,25 @@
         };
         
         // Initialize Google Generative AI
-        const apiKey = "AIzaSyCAk4mkNVUtb3Fqi1SoU_a4y6r7_sWhxxs"; // Replace with your actual API key
+        const apiKey = "123456789"; // Replace with your actual API key
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        
+        // Toggle chat widget
+        chatToggle.addEventListener("click", () => {
+          chatContainer.classList.add("active");
+          chatToggle.style.display = "none";
+          // Focus the input after opening
+          setTimeout(() => {
+            chatBox.focus();
+          }, 300);
+        });
+        
+        // Close chat
+        closeButton.addEventListener("click", () => {
+          chatContainer.classList.remove("active");
+          chatToggle.style.display = "flex";
+        });
         
         // Add welcome screen content
         function addWelcomeScreen() {
@@ -636,9 +740,6 @@
           }
         });
         
-        // Focus chat input on load
-        chatBox.focus();
-        
         // Update button state based on input
         chatBox.addEventListener("input", () => {
           if (chatBox.value.trim() === "") {
@@ -648,13 +749,19 @@
           }
         });
         
-        // Close button functionality
-        document.querySelector(".close-button").addEventListener("click", () => {
-          alert("Close button clicked. Add your close functionality here.");
-        });
-        
         // Add window resize handler to ensure proper scrolling
         window.addEventListener("resize", scrollToBottom);
+        
+        // Handle clicks outside the chat widget to close it
+        document.addEventListener("click", (e) => {
+          // Check if click is outside both the chat container and toggle button
+          if (!chatContainer.contains(e.target) && 
+              !chatToggle.contains(e.target) && 
+              chatContainer.classList.contains("active")) {
+            chatContainer.classList.remove("active");
+            chatToggle.style.display = "flex";
+          }
+        });
       });
     </script>
   </body>
