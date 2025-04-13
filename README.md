@@ -1,5 +1,6 @@
-# 🌐 Web-UI
-  Interactive UI elements for personal use 🛠️✨
+# 🌐 Web-UI Elements
+
+Interactive UI elements for personal use 🛠️✨
 
 ## 🛠️ Dependencies 
    
