@@ -1,102 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChatAssistant widget</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Add Markdown parser library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <link rel="stylesheet" href="chat.css" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="chat-widget-container">
-      <!-- Chat toggle button -->
-      <div class="chat-toggle pulse">
-        <i class="fa-solid fa-comment"></i>
-      </div>
-      
-      <!-- Chat container (initially hidden) -->
-      <div class="container">
-        <header>
-          <div class="profile-badge">Bhumi</div>
-          <span class="fa-stack verified-badge">
-            <i class="fas fa-circle fa-stack-2x circle-bg"></i>
-            <i class="fas fa-check fa-stack-1x check-icon"></i>
-          </span>
-          <div class="close-button">×</div>
-        </header>
-        <main class="main-container">
-          <div id="main-content" class="main-content">
-            <!-- Initial welcome content will be added by JavaScript -->
-          </div>
-          <div id="chat-container" class="chat-container">
-            <input
-              id="chat-box"
-              type="text"
-              class="chat-box"
-              placeholder="Ask me anything..."
-            />
-            <button id="run-btn" class="run-btn disabled">
-              <i class="fa-solid fa-paper-plane"></i>
-            </button>
-          </div>
-        </main>
-      </div>
+        <!-- Chat toggle button -->
+        <div class="chat-toggle pulse">
+            <i class="fa-solid fa-comment"></i>
+        </div>
+
+        <!-- Chat container (initially hidden) -->
+        <div class="container">
+            <header>
+                <div class="profile-badge">BlockTutor</div>
+                <div class="close-button">×</div>
+            </header>
+            <main class="main-container">
+                <div id="main-content" class="main-content">
+                    <!-- Initial welcome content will be added by JavaScript -->
+                </div>
+                <div id="chat-container" class="chat-container">
+                    <input id="chat-box" type="text" class="chat-box" placeholder="Ask me anything..." />
+                    <button id="run-btn" class="run-btn disabled">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </main>
+        </div>
     </div>
 
     <script type="module">
-      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-      document.addEventListener("DOMContentLoaded", () => {
-        // DOM Elements
-        const chatBox = document.getElementById("chat-box");
-        const runBtn = document.getElementById("run-btn");
-        const chatHistory = document.getElementById("main-content");
-        const chatToggle = document.querySelector(".chat-toggle");
-        const chatContainer = document.querySelector(".container");
-        const closeButton = document.querySelector(".close-button");
-        
-        // Initialize the markdown parser
-        const markedOptions = {
-          gfm: true,
-          breaks: true,
-          sanitize: false,
-          smartypants: true
-        };
-        
-        // Initialize Google Generative AI
-        const apiKey = "123"; // Replace with your actual API key
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        
-        // Toggle chat widget
-        chatToggle.addEventListener("click", () => {
-          chatContainer.classList.add("active");
-          chatToggle.style.display = "none";
-          // Focus the input after opening
-          setTimeout(() => {
-            chatBox.focus();
-          }, 300);
-        });
-        
-        // Close chat
-        closeButton.addEventListener("click", () => {
-          chatContainer.classList.remove("active");
-          chatToggle.style.display = "flex";
-        });
-        
-        // Add welcome screen content
-        function addWelcomeScreen() {
-          const welcomeHTML = `
+        document.addEventListener("DOMContentLoaded", () => {
+            // DOM Elements
+            const chatBox = document.getElementById("chat-box");
+            const runBtn = document.getElementById("run-btn");
+            const chatHistory = document.getElementById("main-content");
+            const chatToggle = document.querySelector(".chat-toggle");
+            const chatContainer = document.querySelector(".container");
+            const closeButton = document.querySelector(".close-button");
+
+            // Initialize the markdown parser
+            const markedOptions = {
+                gfm: true,
+                breaks: true,
+                sanitize: false,
+                smartypants: true
+            };
+
+            // Initialize Google Generative AI
+            const apiKey = "AIzaSyCAk4mkNVUtb3Fqi1SoU_a4y6r7_sWhxxs"; // Replace with your actual API key
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+            // Toggle chat widget
+            chatToggle.addEventListener("click", () => {
+                chatContainer.classList.add("active");
+                chatToggle.style.display = "none";
+                // Focus the input after opening
+                setTimeout(() => {
+                    chatBox.focus();
+                }, 300);
+            });
+
+            // Close chat
+            closeButton.addEventListener("click", () => {
+                chatContainer.classList.remove("active");
+                chatToggle.style.display = "flex";
+            });
+
+            // Add welcome screen content
+            function addWelcomeScreen() {
+                const welcomeHTML = `
             <div class="greeting-container">
-              <h2 class="welcome-header">Let's grow <span class="colored-text">together!</span></h2>
+              <h2 class="welcome-header">Let's learn <span class="colored-text">together!</span></h2>
               
               <div class="avatar-container">
                 <div class="avatar">
@@ -108,185 +97,234 @@
               
               <div class="suggestion-buttons">
                 <div class="suggestion-button" id="suggestion-1">
-                  <span class="suggestion-icon">🪴</span> How can I improve soil fertility for rice farming?
+                  <span class="suggestion-icon">🔍</span> How can I find study materials on LearnEx?
                 </div>
                 <div class="suggestion-button" id="suggestion-2">
-                  <span class="suggestion-icon">🍅</span> How can I control pests in tomatoes?
+                  <span class="suggestion-icon">📚</span> Can I buy notes or video courses using cryptocurrency?
                 </div>
               </div>
             </div>
           `;
-          
-          chatHistory.innerHTML = welcomeHTML;
-          
-          // Add event listeners to suggestion buttons
-          document.getElementById("suggestion-1").addEventListener("click", () => {
-            chatBox.value = "How can I improve soil fertility for rice farming?";
-            runBtn.classList.remove("disabled");
-            processUserMessage();
-          });
-          
-          document.getElementById("suggestion-2").addEventListener("click", () => {
-            chatBox.value = "How can I control pests in tomatoes?";
-            runBtn.classList.remove("disabled");
-            processUserMessage();
-          });
-        }
-        
-        // Add welcome screen on load
-        addWelcomeScreen();
-        
-        // Generate response from Gemini
-        async function geminiResponse(userInput) {
-          try {
-            const result = await model.generateContent(userInput);
-            const response = await result.response;
-            return response.text();
-          } catch (error) {
-            console.error("Error generating content:", error);
-            return "Sorry, I encountered an error processing your request. Please try again.";
-          }
-        }
-        
-        // Process markdown in AI responses
-        function renderMarkdown(text) {
-          try {
-            // First convert URLs to actual links
-            const linkedText = linkify(text);
-            // Then render the markdown
-            return marked.parse(linkedText, markedOptions);
-          } catch (error) {
-            console.error("Error rendering markdown:", error);
-            return text;
-          }
-        }
-        
-        // Add messages to chat history
-        function addMessageToHistory(message, isUser = false) {
-          // Check if this is the first message - if so, clear the welcome screen
-          if (document.querySelector(".greeting-container")) {
-            chatHistory.innerHTML = "";
-          }
-          
-          const messageDiv = document.createElement("div");
-          messageDiv.className = isUser ? "user-message" : "ai-message";
-          
-          if (isUser) {
-            // User messages don't need markdown rendering
-            messageDiv.textContent = message;
-          } else {
-            // AI messages get markdown rendering
-            messageDiv.innerHTML = renderMarkdown(message);
-            
-            // Make sure code blocks are properly styled
-            const codeBlocks = messageDiv.querySelectorAll('pre code');
-            if (codeBlocks.length > 0) {
-              // Add syntax highlighting class if available
-              codeBlocks.forEach(block => {
-                block.classList.add('language-javascript');
-              });
+
+                chatHistory.innerHTML = welcomeHTML;
+
+                // Add event listeners to suggestion buttons
+                document.getElementById("suggestion-1").addEventListener("click", () => {
+                    chatBox.value = "How can I improve soil fertility for rice farming?";
+                    runBtn.classList.remove("disabled");
+                    processUserMessage();
+                });
+
+                document.getElementById("suggestion-2").addEventListener("click", () => {
+                    chatBox.value = "How can I control pests in tomatoes?";
+                    runBtn.classList.remove("disabled");
+                    processUserMessage();
+                });
             }
-          }
-          
-          // Add animation for better interaction
-          messageDiv.style.animation = "fadeIn 0.3s ease-in-out";
-          
-          chatHistory.appendChild(messageDiv);
-          scrollToBottom();
-        }
-        
-        // Convert URLs in text to clickable links
-        function linkify(text) {
-          const urlRegex = /(https?:\/\/[^\s]+)/g;
-          return text.replace(urlRegex, url => `<a href="${url}" target="_blank">${url}</a>`);
-        }
-        
-        // Smooth scroll to bottom of chat
-        function scrollToBottom() {
-          chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-        
-        // Display typing indicator
-        function showTypingIndicator() {
-          const loadingDiv = document.createElement("div");
-          loadingDiv.innerHTML = "<div class='typing-indicator'><span></span><span></span><span></span></div>";
-          loadingDiv.className = "loading-message";
-          loadingDiv.id = "typing-indicator";
-          chatHistory.appendChild(loadingDiv);
-          scrollToBottom();
-          return loadingDiv;
-        }
-        
-        // Process user message and get AI response
-        async function processUserMessage() {
-          const userMessage = chatBox.value.trim();
-          if (userMessage === "") return;
-          
-          // Add user message to chat
-          addMessageToHistory(userMessage, true);
-          chatBox.value = "";
-          
-          // Update button state
-          runBtn.classList.add("disabled");
-          
-          // Show typing indicator
-          const loadingDiv = showTypingIndicator();
-          
-          // Create enhanced prompt with context
-          const enhancedPrompt = `Your name is Bhumi, an agricultural AI assistant. You help farmers and gardeners with advice on growing plants, improving soil health, pest management, and sustainable farming practices. You should use appropriate emojis occasionally and keep your responses helpful and concise. You can use markdown formatting in your responses for better readability. Please respond to this query: ${userMessage}`;
-          
-          try {
-            // Get AI response
-            const response = await geminiResponse(enhancedPrompt);
-            
-            // Remove typing indicator and add response
-            chatHistory.removeChild(loadingDiv);
-            addMessageToHistory(response);
-          } catch (error) {
-            chatHistory.removeChild(loadingDiv);
-            addMessageToHistory("Error: Unable to process the request. Please try again.");
-          }
-        }
-        
-        // Event Listeners
-        runBtn.addEventListener("click", () => {
-          if (!runBtn.classList.contains("disabled")) {
-            processUserMessage();
-          }
-        });
-        
-        chatBox.addEventListener("keypress", (e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            if (!runBtn.classList.contains("disabled")) {
-              processUserMessage();
+
+            // Add welcome screen on load
+            addWelcomeScreen();
+
+            // Generate response from Gemini
+            async function geminiResponse(userInput) {
+                try {
+                    const result = await model.generateContent(userInput);
+                    const response = await result.response;
+                    return response.text();
+                } catch (error) {
+                    console.error("Error generating content:", error);
+                    return "Sorry, I encountered an error processing your request. Please try again.";
+                }
             }
-          }
+
+            // Process markdown in AI responses
+            function renderMarkdown(text) {
+                try {
+                    // First convert URLs to actual links
+                    const linkedText = linkify(text);
+                    // Then render the markdown
+                    return marked.parse(linkedText, markedOptions);
+                } catch (error) {
+                    console.error("Error rendering markdown:", error);
+                    return text;
+                }
+            }
+
+            // Add messages to chat history
+            function addMessageToHistory(message, isUser = false) {
+                // Check if this is the first message - if so, clear the welcome screen
+                if (document.querySelector(".greeting-container")) {
+                    chatHistory.innerHTML = "";
+                }
+
+                const messageDiv = document.createElement("div");
+                messageDiv.className = isUser ? "user-message" : "ai-message";
+
+                if (isUser) {
+                    // User messages don't need markdown rendering
+                    messageDiv.textContent = message;
+                } else {
+                    // AI messages get markdown rendering
+                    messageDiv.innerHTML = renderMarkdown(message);
+
+                    // Make sure code blocks are properly styled
+                    const codeBlocks = messageDiv.querySelectorAll('pre code');
+                    if (codeBlocks.length > 0) {
+                        // Add syntax highlighting class if available
+                        codeBlocks.forEach(block => {
+                            block.classList.add('language-javascript');
+                        });
+                    }
+                }
+
+                // Add animation for better interaction
+                messageDiv.style.animation = "fadeIn 0.3s ease-in-out";
+
+                chatHistory.appendChild(messageDiv);
+                scrollToBottom();
+            }
+
+            // Convert URLs in text to clickable links
+            function linkify(text) {
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                return text.replace(urlRegex, url => `<a href="${url}" target="_blank">${url}</a>`);
+            }
+
+            // Smooth scroll to bottom of chat
+            function scrollToBottom() {
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            // Display typing indicator
+            function showTypingIndicator() {
+                const loadingDiv = document.createElement("div");
+                loadingDiv.innerHTML = "<div class='typing-indicator'><span></span><span></span><span></span></div>";
+                loadingDiv.className = "loading-message";
+                loadingDiv.id = "typing-indicator";
+                chatHistory.appendChild(loadingDiv);
+                scrollToBottom();
+                return loadingDiv;
+            }
+
+            // Process user message and get AI response
+            async function processUserMessage() {
+                const userMessage = chatBox.value.trim();
+                if (userMessage === "") return;
+
+                // Add user message to chat
+                addMessageToHistory(userMessage, true);
+                chatBox.value = "";
+
+                // Update button state
+                runBtn.classList.add("disabled");
+
+                // Show typing indicator
+                const loadingDiv = showTypingIndicator();
+
+                // Create enhanced prompt with context
+                const enhancedPrompt = `🧠 Identity & Role: 
+                You are BlockTutor, the official AI assistant of LearnEx – Study Marketplace, a decentralized platform that facilitates buying and selling of educational materials using blockchain technology.
+
+                Your role is to professionally assist users—including students, educators, and content creators—by:
+
+                1. Guiding them to relevant study materials
+
+                2. Explaining how to use the LearnEx platform
+
+                3. Helping them understand blockchain-powered education
+
+                💬 Communication Style
+                1. Maintain a friendly yet professional tone.
+
+                2. Be polite, engaging, and approachable.
+
+                3. Make interactions enjoyable and productive.
+
+                4. Use emojis sparingly and appropriately to enhance clarity and friendliness 😊.
+
+                5. Use Markdown formatting for emphasis, code, and lists where helpful.
+
+                🧩 Core Knowledge Areas
+                You are well-informed about:
+
+                1. Decentralized storage (e.g., IPFS)
+
+                2. Cryptocurrency payments for educational content
+
+                3. How to publish, search, and access materials on LearnEx
+
+                4. Privacy, security, and censorship-resistance in decentralized education
+
+                🎯 Primary Objectives
+                1. Ensure users feel supported and receive accurate, clear answers
+
+                2. Guide users on how to use LearnEx features effectively
+
+                3. Educate users about the benefits and operations of blockchain in education
+
+                🚫 Handling Off-Topic Queries
+                If users ask unrelated or off-topic questions:
+
+                Gently redirect the conversation toward relevant educational or LearnEx-related topics.
+
+                Example:
+                “That’s an interesting topic! While I specialize in educational and blockchain topics on LearnEx, I’d be happy to help you find study materials or explain how the platform works 📚💡.
+
+                Please respond in well structured(use bullet points, headings, list wherever are these applicable), concise but informative, markdown format to this query: ${userMessage}`;
+
+                try {
+                    // Get AI response
+                    const response = await geminiResponse(enhancedPrompt);
+
+                    // Remove typing indicator and add response
+                    chatHistory.removeChild(loadingDiv);
+                    addMessageToHistory(response);
+                } catch (error) {
+                    chatHistory.removeChild(loadingDiv);
+                    addMessageToHistory("Error: Unable to process the request. Please try again.");
+                }
+            }
+
+            // Event Listeners
+            runBtn.addEventListener("click", () => {
+                if (!runBtn.classList.contains("disabled")) {
+                    processUserMessage();
+                }
+            });
+
+            chatBox.addEventListener("keypress", (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    if (!runBtn.classList.contains("disabled")) {
+                        processUserMessage();
+                    }
+                }
+            });
+
+            // Update button state based on input
+            chatBox.addEventListener("input", () => {
+                if (chatBox.value.trim() === "") {
+                    runBtn.classList.add("disabled");
+                } else {
+                    runBtn.classList.remove("disabled");
+                }
+            });
+
+            // Add window resize handler to ensure proper scrolling
+            window.addEventListener("resize", scrollToBottom);
+
+            // Handle clicks outside the chat widget to close it
+            document.addEventListener("click", (e) => {
+                // Check if click is outside both the chat container and toggle button
+                if (!chatContainer.contains(e.target) &&
+                    !chatToggle.contains(e.target) &&
+                    chatContainer.classList.contains("active")) {
+                    chatContainer.classList.remove("active");
+                    chatToggle.style.display = "flex";
+                }
+            });
         });
-        
-        // Update button state based on input
-        chatBox.addEventListener("input", () => {
-          if (chatBox.value.trim() === "") {
-            runBtn.classList.add("disabled");
-          } else {
-            runBtn.classList.remove("disabled");
-          }
-        });
-        
-        // Add window resize handler to ensure proper scrolling
-        window.addEventListener("resize", scrollToBottom);
-        
-        // Handle clicks outside the chat widget to close it
-        document.addEventListener("click", (e) => {
-          // Check if click is outside both the chat container and toggle button
-          if (!chatContainer.contains(e.target) && 
-              !chatToggle.contains(e.target) && 
-              chatContainer.classList.contains("active")) {
-            chatContainer.classList.remove("active");
-            chatToggle.style.display = "flex";
-          }
-        });
-      });
     </script>
-  </body>
+</body>
+
 </html>
