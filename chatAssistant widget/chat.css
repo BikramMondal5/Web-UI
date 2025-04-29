@@ -522,3 +522,29 @@ header {
 .username {
     font-weight: bold;
 }
+
+#avatar-icon{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-position: center;
+    background-image: url('https://img.freepik.com/free-vector/graident-ai-robot-vectorart_78370-4114.jpg');
+}
+
+.avatar-icon{
+    height: 10x;
+    width: 10px;
+    border-radius: 50%;
+}
+
+.div1{
+    background-color: red;
+}
+
+.div2{
+    background-color: blue;
+}
+
+.div3{
+    background-color: yellow;
+}
