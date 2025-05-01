@@ -61,7 +61,7 @@
             };
 
             // Initialize Google Generative AI
-            const apiKey = "1234"; // Replace with your actual API key
+            const apiKey = "AIzaSyCAk4mkNVUtb3Fqi1SoU_a4y6r7_sWhxxs"; // Replace with your actual API key
             const genAI = new GoogleGenerativeAI(apiKey);
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -110,13 +110,13 @@
 
                 // Add event listeners to suggestion buttons
                 document.getElementById("suggestion-1").addEventListener("click", () => {
-                    chatBox.value = "How can I improve soil fertility for rice farming?";
+                    chatBox.value = "How can I find study materials on LearnEx?";
                     runBtn.classList.remove("disabled");
                     processUserMessage();
                 });
 
                 document.getElementById("suggestion-2").addEventListener("click", () => {
-                    chatBox.value = "How can I control pests in tomatoes?";
+                    chatBox.value = "Can I buy notes or video courses using cryptocurrency?";
                     runBtn.classList.remove("disabled");
                     processUserMessage();
                 });
