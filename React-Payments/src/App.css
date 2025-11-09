@@ -1,0 +1,144 @@
+/* Reset and ensure proper centering */
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.payment-card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 450px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.5s ease-out;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-card h1 {
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #718096;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+  text-align: left;
+  width: 100%;
+}
+
+.input-group label {
+  display: block;
+  color: #2d3748;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: #1a202c;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  background-color: #ffe4e1; /* Light pink background */
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #3591e2;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.input-group input:disabled {
+  background-color: #f7fafc;
+  cursor: not-allowed;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+.pay-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+}
+
+.pay-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pay-button:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.info-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f0fdf4;
+  border-radius: 10px;
+  border: 1px solid #bbf7d0;
+}
+
+.info-box p {
+  color: #166534;
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .payment-card {
+    padding: 2rem;
+  }
+
+  .payment-card h1 {
+    font-size: 1.5rem;
+  }
+}
