@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lingo.dev Localization Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        select, button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #result {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 50px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lingo.dev Website Localization</h1>
+    <div class="container">
+        <label for="text">Text to translate:</label><br>
+        <textarea id="text" placeholder="Enter text to translate...">Hello, world! Welcome to our website.</textarea>
+    </div>
+    <div class="container">
+        <label for="sourceLang">Source Language:</label>
+        <select id="sourceLang">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="mr">Marathi</option>
+            <option value="gu">Gujarati</option>
+            <option value="as">Assamese</option>
+            <option value="ta">Tamil</option>
+            <option value="te">Telugu</option>
+            <option value="kn">Kannada</option>
+            <option value="ml">Malayalam</option>
+            <option value="pa">Punjabi</option>
+            <option value="ur">Urdu</option>
+        </select>
+        <label for="targetLang">Target Language:</label>
+        <select id="targetLang">
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="mr">Marathi</option>
+            <option value="gu">Gujarati</option>
+            <option value="as">Assamese</option>
+            <option value="ta">Tamil</option>
+            <option value="te">Telugu</option>
+            <option value="kn">Kannada</option>
+            <option value="ml">Malayalam</option>
+            <option value="pa">Punjabi</option>
+            <option value="ur">Urdu</option>
+            <option value="en">English</option>
+        </select>
+        <button onclick="translateText()">Translate</button>
+    </div>
+    <div class="container">
+        <h3>Translated Text:</h3>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function translateText() {
+            const text = document.getElementById('text').value;
+            const sourceLocale = document.getElementById('sourceLang').value;
+            const targetLocale = document.getElementById('targetLang').value;
+
+            if (!text.trim()) {
+                alert('Please enter some text to translate');
+                return;
+            }
+
+            document.getElementById('result').innerHTML = 'Translating...';
+
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text,
+                        sourceLocale,
+                        targetLocale,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('result').innerHTML = data.translatedText;
+                } else {
+                    document.getElementById('result').innerHTML = 'Error: ' + data.error;
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
