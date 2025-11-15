@@ -1,6 +1,6 @@
-# 🌐 Web-UI Elements
+# 🌐✨ My Resources
 
-Interactive UI elements for personal use 🛠️✨
+Web Resources for personal use 
 
 ## 🛠️ Dependencies 
    
