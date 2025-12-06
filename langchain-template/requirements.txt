@@ -1,0 +1,5 @@
+langchain==0.3.19
+langchain-core==0.3.35
+langchain-google-genai
+streamlit
+python-dotenv
